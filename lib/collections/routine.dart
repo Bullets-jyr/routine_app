@@ -1,10 +1,13 @@
 import 'package:isar/isar.dart';
 import 'package:routine_app/collections/category.dart';
+// flutter pub run build_runner build
+part 'routine.g.dart';
 
 @Collection()
 class Routine {
-  @Id()
-  int id = Isar.autoIncrement;
+  // @Id()
+  // int id = Isar.autoIncrement;
+  Id id = Isar.autoIncrement;
 
   late String title;
 
