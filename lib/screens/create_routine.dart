@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:routine_app/collections/category.dart';
 
 class CreateRoutine extends StatefulWidget {
-  const CreateRoutine({Key? key}) : super(key: key);
+  final Isar isar;
+
+  const CreateRoutine({
+    Key? key,
+    required this.isar,
+  }) : super(key: key);
 
   @override
   State<CreateRoutine> createState() => _CreateRoutineState();
@@ -86,7 +93,11 @@ class _CreateRoutineState extends State<CreateRoutine> {
                           ),
                           actions: [
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                if (_newCatController.text.isNotEmpty) {
+                                  _addCategory(widget.isar);
+                                }
+                              },
                               child: const Text(
                                 "Add",
                               ),
@@ -202,5 +213,18 @@ class _CreateRoutineState extends State<CreateRoutine> {
             "${selectedTime.hour}:${selectedTime.minute} ${selectedTime.period.name}";
       });
     }
+  }
+
+  //create category record
+  _addCategory(Isar isar) async {
+    final categories = isar.categorys;
+
+    final newCategory = Category()..name = _newCatController.text;
+
+    await isar.writeTxn(() async {
+      await categories.put(newCategory);
+    });
+
+    _newCatController.clear();
   }
 }

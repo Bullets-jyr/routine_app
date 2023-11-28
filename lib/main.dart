@@ -12,11 +12,20 @@ void main() async {
     [RoutineSchema, CategorySchema],
     directory: dir.path,
   );
-  runApp(const MyApp());
+  runApp(
+    MyApp(
+      isar: isar,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Isar isar;
+
+  const MyApp({
+    super.key,
+    required this.isar,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +35,21 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainPage(),
+      home: MainPage(
+        isar: isar,
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final Isar isar;
+
+  const MainPage({
+    super.key,
+    required this.isar,
+  });
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -51,7 +67,9 @@ class _MainPageState extends State<MainPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CreateRoutine(),
+                  builder: (context) => CreateRoutine(
+                    isar: widget.isar,
+                  ),
                 ),
               );
             },
