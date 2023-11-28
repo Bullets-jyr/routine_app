@@ -15,10 +15,12 @@ class CreateRoutine extends StatefulWidget {
 }
 
 class _CreateRoutineState extends State<CreateRoutine> {
-  List<String> categories = ['work', 'school', 'home'];
+  // List<String> categories = ['work', 'school', 'home'];
+  List<Category>? categories;
 
   // default category
-  String dropdownValue = 'work';
+  // String dropdownValue = 'work';
+  Category? dropdownValue;
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
@@ -37,6 +39,12 @@ class _CreateRoutineState extends State<CreateRoutine> {
   String dropdownDay = "monday";
 
   TimeOfDay selectedTime = TimeOfDay.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _readCategory();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +77,13 @@ class _CreateRoutineState extends State<CreateRoutine> {
                         Icons.keyboard_arrow_down,
                       ),
                       items: categories
-                          .map<DropdownMenuItem<String>>((String nvalue) {
-                        return DropdownMenuItem<String>(
+                          ?.map<DropdownMenuItem<Category>>((Category nvalue) {
+                        return DropdownMenuItem<Category>(
                           value: nvalue,
-                          child: Text(nvalue),
+                          child: Text(nvalue.name),
                         );
                       }).toList(),
-                      onChanged: (String? newValue) {
+                      onChanged: (Category? newValue) {
                         setState(() {
                           dropdownValue = newValue!;
                         });
@@ -226,5 +234,15 @@ class _CreateRoutineState extends State<CreateRoutine> {
     });
 
     _newCatController.clear();
+    _readCategory();
+  }
+
+  _readCategory() async {
+    final categoryCollection = widget.isar.categorys;
+    final getCategories = await categoryCollection.where().findAll();
+    setState(() {
+      dropdownValue = null;
+      categories = getCategories;
+    });
   }
 }
