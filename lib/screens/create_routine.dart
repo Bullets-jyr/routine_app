@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:routine_app/collections/category.dart';
+import 'package:routine_app/collections/routine.dart';
 
 class CreateRoutine extends StatefulWidget {
   final Isar isar;
@@ -194,7 +195,9 @@ class _CreateRoutineState extends State<CreateRoutine> {
               Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    addRoutine();
+                  },
                   child: const Text(
                     "Add",
                   ),
@@ -243,6 +246,26 @@ class _CreateRoutineState extends State<CreateRoutine> {
     setState(() {
       dropdownValue = null;
       categories = getCategories;
+    });
+  }
+
+  addRoutine() async {
+    final routineCollection = widget.isar.routines;
+    final newRoutine = Routine()
+      ..title = _titleController.text
+      ..startTime = _timeController.text
+      ..day = dropdownDay
+      ..category.value = dropdownValue;
+
+    await widget.isar.writeTxn(() async {
+      await routineCollection.put(newRoutine);
+    });
+
+    _titleController.clear();
+    _timeController.clear();
+    setState(() {
+      dropdownDay = "monday";
+      dropdownValue = null;
     });
   }
 }
