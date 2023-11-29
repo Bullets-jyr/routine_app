@@ -259,6 +259,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
 
     await widget.isar.writeTxn(() async {
       await routineCollection.put(newRoutine);
+      await newRoutine.category.save();
     });
 
     _titleController.clear();
