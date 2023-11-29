@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:routine_app/collections/category.dart';
 import 'package:routine_app/collections/routine.dart';
 import 'package:routine_app/screens/create_routine.dart';
+import 'package:routine_app/screens/update_routine.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +63,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _readRoutines();
+    // _readRoutines();
   }
 
   @override
@@ -87,14 +88,22 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: _buildWidgets(),
-        ),
+        child: FutureBuilder<List<Widget>>(
+            future: _buildWidgets(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(children: snapshot.data!);
+              } else {
+                return const SizedBox();
+              }
+            }),
       ),
     );
   }
 
-  List<Widget> _buildWidgets() {
+  Future<List<Widget>> _buildWidgets() async {
+    await _readRoutines();
+
     List<Widget> x = [];
 
     for (int i = 0; i < routines!.length; i++) {
@@ -102,6 +111,15 @@ class _MainPageState extends State<MainPage> {
         Card(
           elevation: 4.0,
           child: ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      UpdateRoutine(isar: widget.isar, routine: routines![i]),
+                ),
+              );
+            },
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
