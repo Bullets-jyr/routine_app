@@ -120,6 +120,16 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+            height: 50,
+            child: ElevatedButton(
+                onPressed: () {
+                  clearAll();
+                },
+                child: const Text("Clear all"))),
+      ),
     );
   }
 
@@ -226,5 +236,18 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       routines = searchResults;
     });
+  }
+
+  clearAll() async {
+    final routineCollection = widget.isar.routines;
+    final getRoutines = await routineCollection.where().findAll();
+
+    await widget.isar.writeTxn(() async {
+      for (var routine in getRoutines) {
+        routineCollection.delete(routine.id);
+      }
+    });
+
+    setState(() {});
   }
 }
