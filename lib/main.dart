@@ -9,6 +9,7 @@ import 'package:routine_app/screens/update_routine.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationDocumentsDirectory();
+  // FIXME 2 : Isar will no longer create the provided directory. Make sure it exists before opening an Isar Instance. ?
   final isar = await Isar.open(
     [RoutineSchema, CategorySchema],
     directory: dir.path,
@@ -252,7 +253,7 @@ class _MainPageState extends State<MainPage> {
   clearAll() async {
     final routineCollection = widget.isar.routines;
     final getRoutines = await routineCollection.where().findAll();
-
+    // FIXME 4: Removed isar parameter from Isar.writeTxn()
     await widget.isar.writeTxn(() async {
       for (var routine in getRoutines) {
         routineCollection.delete(routine.id);
@@ -266,6 +267,7 @@ class _MainPageState extends State<MainPage> {
     Query<Routine> getTasks = widget.isar.routines.where().build();
 
     // Stream<List<Routine>> queryChanged = getTasks.watch(initialReturn: true);
+    // FIXME 5: Renamed the initialReturn parameter to fireImmediately
     Stream<List<Routine>> queryChanged = getTasks.watch(fireImmediately: true);
     queryChanged.listen((routines) {
       if (routines.length > 3) {

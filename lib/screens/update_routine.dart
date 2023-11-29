@@ -229,7 +229,7 @@ class _UpdateRoutineState extends State<UpdateRoutine> {
     final categories = isar.categorys;
 
     final newCategory = Category()..name = _newCatController.text;
-
+    // FIXME 4: Removed isar parameter from Isar.writeTxn()
     await isar.writeTxn(() async {
       await categories.put(newCategory);
     });
@@ -264,6 +264,7 @@ class _UpdateRoutineState extends State<UpdateRoutine> {
 
   updateRoutine() async {
     final routineCollection = widget.isar.routines;
+    // FIXME 4: Removed isar parameter from Isar.writeTxn()
     await widget.isar.writeTxn(() async {
       final routine = await routineCollection.get(widget.routine.id);
 
@@ -281,7 +282,7 @@ class _UpdateRoutineState extends State<UpdateRoutine> {
 
   deleteRoutine() async {
     final routineCollection = widget.isar.routines;
-
+    // FIXME 4:  Removed isar parameter from Isar.writeTxn()
     await widget.isar.writeTxn(() async {
       routineCollection.delete(widget.routine.id);
     });

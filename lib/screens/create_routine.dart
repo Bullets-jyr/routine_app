@@ -231,7 +231,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
     final categories = isar.categorys;
 
     final newCategory = Category()..name = _newCatController.text;
-
+    // FIXME 4: Removed isar parameter from Isar.writeTxn()
     await isar.writeTxn(() async {
       await categories.put(newCategory);
     });
@@ -257,6 +257,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
       ..day = dropdownDay
       ..category.value = dropdownValue;
 
+    // FIXME 4: Removed isar parameter from Isar.writeTxn()
     await widget.isar.writeTxn(() async {
       await routineCollection.put(newRoutine);
       await newRoutine.category.save();

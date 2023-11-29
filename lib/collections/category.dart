@@ -6,6 +6,7 @@ part 'category.g.dart';
 class Category {
   // @Id()
   // int id = Isar.autoIncrement;
+  // FIXME 3: Type to specify the id property of a collection.
   Id id = Isar.autoIncrement;
 
   @Index(unique: true)

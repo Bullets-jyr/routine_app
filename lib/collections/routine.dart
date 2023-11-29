@@ -7,6 +7,7 @@ part 'routine.g.dart';
 class Routine {
   // @Id()
   // int id = Isar.autoIncrement;
+  // FIXME 3: Type to specify the id property of a collection.
   Id id = Isar.autoIncrement;
 
   late String title;
